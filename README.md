@@ -1,7 +1,7 @@
-#Write It
+# Write It
 The application allows you to save and catalog notes.
 
-###Smart contract
+### Smart contract
 
 
 - `totalNotes()` - Returns the number of notes created.
