@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,800" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Notes</title>
+</head>
+
+<body>
+    <header class="d-flex align-items-center header">
+        <img class="logo" src="img/logo.png" alt="logo">
+    </header>
+    <div class="d-flex main-content">
+        <div class="panel categories">
+            <div class="panel-header">
+                Categories
+                <div class="panel-controls">
+                    <button title="Add category" data-toggle="modal" data-target="#new-category-modal">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <!-- <div class="subchapter category">
+                    All
+                    <div class="subchapter-controls">
+                        <button data-toggle="modal" data-target="#remove-category-modal">&times;</button>
+                    </div>
+                </div> -->
+                <div class="d-flex flex-column justify-content-center align-items-center no-data">
+                    <img src="img/no-data.svg">
+                    <span>No categories</span>
+                </div>
+            </div>
+        </div>
+        <div class="panel notes">
+            <div class="panel-header">
+                Notes
+                <div class="panel-controls">
+                    <button data-toggle="tooltip" data-placement="top" title="Add note" id="btn-new-note" disabled>
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <!-- <div class="subchapter note">
+                    Стихи
+                    <div class="subchapter-controls">
+                        <button>&times;</button>
+                    </div>
+                </div> -->
+                <div class="d-flex flex-column justify-content-center align-items-center no-data">
+                    <img src="img/no-data1.svg">
+                    <span>No notes</span>
+                </div>
+            </div>
+        </div>
+        <div class="panel note">
+            <div class="panel-header">
+                Selected note
+                <div class="d-flex panel-controls">
+                    <button data-toggle="tooltip" data-placement="top" title="Save note" id="save-note">
+                        <i class="far fa-save"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <form id="note-form">
+                    <input hidden type="text" id="note-category-id" required>
+                    <input hidden type="text" id="note-id" required>
+                    <input type="text" class="form-control" placeholder="Title" id="note-title" required>
+                    <textarea class="form-control" rows="20" placeholder="Note" id="note-text" required></textarea>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- New category modal-->
+    <div class="modal" tabindex="-1" role="dialog" id="new-category-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New category</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="new-category-form">
+                        <div class="form-group">
+                            <label for="category-title">Title</label>
+                            <input type="text" class="form-control" id="category-title" placeholder="Category title" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" form="new-category-form">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remove category modal-->
+    <div class="modal" tabindex="-1" role="dialog" id="remove-category-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Remove category</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure want to delete a category with all notes?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="btn-confirm-remove-category">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bignumber.js/7.0.1/bignumber.min.js"></script>
+    <script src="js/nebPay.js"></script>
+    <script src="js/contractApi.js"></script>
+    <script>
+        'use strict';
+        window.addEventListener("load", function () {
+            if (typeof (webExtensionWallet) == "undefined") {
+				alert('Please install WebExtensionWallet');
+            }
+            else {
+                $('[data-toggle="tooltip"]').tooltip();
+
+                let api = new ContractApi();
+                api.loadCategories(resp => {
+                    if (resp.result) {
+                        let categories = JSON.parse(resp.result);
+                        let categoriesPanel = $('.panel.categories .panel-body');
+                        if (categories.length > 0) {
+                            categoriesPanel.empty();
+                        }
+
+                        for (const category of categories) {
+                            categoriesPanel.append(`<div class="subchapter category" data-category-id="${category.id}">${category.title}<div class="subchapter-controls">
+                                                <button data-toggle="modal" data-target="#remove-category-modal">&times;</button>
+                                            </div>
+                                        </div>`);
+                            let addedCategory = categoriesPanel.find('.category').last();
+                            //Обработчик загрузки заметок категории
+                            addedCategory.click(function (event) {
+                                if (event.target !== addedCategory[0]) {
+                                    event.preventDefault();
+                                    return;
+                                }
+                                $('.panel.notes .panel-body').empty();
+                                $('.panel.notes .panel-body').append(`<div id="circularG">
+                                                                        <div id="circularG_1" class="circularG"></div>
+                                                                        <div id="circularG_2" class="circularG"></div>
+                                                                        <div id="circularG_3" class="circularG"></div>
+                                                                        <div id="circularG_4" class="circularG"></div>
+                                                                        <div id="circularG_5" class="circularG"></div>
+                                                                        <div id="circularG_6" class="circularG"></div>
+                                                                        <div id="circularG_7" class="circularG"></div>
+                                                                        <div id="circularG_8" class="circularG"></div>
+                                                                    </div>`);
+                                $('.panel.note')[0].style.visibility = 'hidden';
+                                categoriesPanel.find('.category.selected').removeClass('selected');
+                                $(this).closest('.category').addClass('selected');
+
+                                $('#btn-new-note').removeAttr('disabled');
+
+                                let categoryId = $(this).data('category-id');
+                                api.getCategoryNotes(categoryId, resp => {
+                                    console.log(resp.result);
+                                    if (resp.result) {
+                                        let notes = JSON.parse(resp.result);
+                                        let notesPanel = $('.panel.notes .panel-body');
+                                        notesPanel.empty();
+                                        if (notes.length > 0) {
+                                            localStorage.setItem('loadedNotes', resp.result);
+                                        }
+                                        else {
+                                            notesPanel.append(`<div class="d-flex flex-column justify-content-center align-items-center no-data">
+                                                                <img src="img/no-data1.svg">
+                                                                <span>No notes</span>
+                                                            </div>`);
+                                        }
+
+                                        for (const note of notes) {
+                                            if (!note) {
+                                                continue;
+                                            }
+                                            notesPanel.append(` <div class="subchapter note" data-note-id="${note.id}">${note.title}<div class="subchapter-controls">
+                                                                        <button>&times;</button>
+                                                                    </div>
+                                                                </div>`);
+
+                                            let addedNote = notesPanel.find('.note').last();
+                                            //загрузка и удаление заметки
+                                            addedNote.click(function (event) {
+                                                let noteId = $(this).closest('.note').data('note-id');
+                                                if (event.target.tagName == 'BUTTON') {
+                                                    api.deleteNote(noteId);
+                                                    return;
+                                                }
+
+                                                $('.panel.note')[0].style.visibility = 'visible';
+                                                notesPanel.find('.selected').removeClass('selected');
+                                                $(this).closest('.note').addClass('selected');
+                                                let titleInput = $('#note-form').find('#note-title');
+                                                let textInput = $('#note-form').find('#note-text');
+                                                titleInput.val('');
+                                                textInput.val('');
+
+                                                $('#note-category-id').val($('.panel.categories').find('.selected').data('category-id'));
+                                                $('#note-id').val(noteId);
+
+                                                let notesJson = localStorage.getItem('loadedNotes');
+                                                if (!notesJson) {
+                                                    return;
+                                                }
+
+                                                let notes = JSON.parse(notesJson);
+                                                for (const note of notes) {
+                                                    if (note.id == noteId) {
+                                                        titleInput.val(note.title);
+                                                        textInput.val(note.text);
+                                                        return;
+                                                    }
+                                                }
+                                            });
+
+                                        }
+                                    }
+                                });
+                            });
+                        }
+                    }
+                });
+
+                //add category
+                $('#new-category-form').submit(function (event) {
+                    event.preventDefault();
+                    let title = $('#category-title').val();
+                    $('#new-category-modal').modal('hide');
+                    api.createCategory(title);
+                });
+
+                //delete category handler
+                $('#remove-category-modal').on('show.bs.modal', function (event) {
+                    let categoryId = $(event.relatedTarget).closest('.category').data('category-id');
+                    $('#btn-confirm-remove-category').data('category-id', categoryId);
+                });
+
+                $('#btn-confirm-remove-category').click(() => {
+                    let categoryId = $('#btn-confirm-remove-category').data('category-id');
+                    $('#remove-category-modal').modal('hide');
+                    api.deleteCategory(categoryId);
+                });
+
+                $('#btn-new-note').click(function (event) {
+                    let notes = $('.panel.notes');
+                    if (notes.find('.note').length == 0) {
+                        notes.find('.panel-body').empty();
+                    }
+                    let categoryId = $('.panel.categories .selected').data('category-id');
+                    notes.find('.panel-body').append(`<div class="subchapter note" data-category-id="${categoryId}">
+                                    <span class="unsaved">*</span> New note
+                                    <div class="subchapter-controls">
+                                        <button>&times;</button>
+                                    </div>
+                                </div>`);
+                    let newNote = notes.find('.note').last();
+
+                    newNote.click(function (event) {
+                        if (event.target !== newNote[0]) {
+                            event.preventDefault();
+                            return;
+                        }
+                        $('.panel.note')[0].style.visibility = 'visible';
+                        $('.panel.notes .selected').removeClass('selected');
+                        $(this).closest('.note').addClass('selected');
+                        $('#note-text').val('');
+                        $('#note-title').val('');
+                        $('#note-id').val('');
+
+                        let categoryId = $(this).closest('.note').data('category-id');
+                        $('#note-category-id').val(categoryId);
+                    });
+
+                    newNote.find('button').click(function (event) {
+
+                        //note delete
+
+                    });
+                });
+
+                $('#save-note').click(function (event) {
+                    let text = $('#note-text').val();
+                    let title = $('#note-title').val();
+                    let id = $('#note-id').val();
+                    let categoryId = $('#note-category-id').val();
+
+                    api.saveNote({
+                        text: text,
+                        title: title,
+                        id: id,
+                    },
+                        categoryId);
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
